@@ -22,7 +22,7 @@ public class App extends javax.swing.JFrame {
 
 	// Objetos
 	static App app;
-	static AppController appController;
+	static Carrinho carrinho;
 
 	// Timer para realizar animações
 	static Timer timer;
@@ -64,7 +64,7 @@ public class App extends javax.swing.JFrame {
 	public static void main(String[] args) throws IOException {
 
 		// Inicializando obj
-		appController = new AppController();
+		carrinho = new Carrinho();
 
 		// Iniciando o app ------------------------------
 		app = new App("imagens/carrinho0.png");
@@ -86,42 +86,56 @@ public class App extends javax.swing.JFrame {
 	// Inicia o menu para inserir produtos
 	public static void StartMenu() {
 
-		String produto = null;
-
-		produto = JOptionPane.showInputDialog(null,
-				"Por Favor, indique o nome do produto:\nOu clique em \"Cancelar\" para finalizar a operação:",
-				"Adicionando Produtos ao carrinho de compras", JOptionPane.QUESTION_MESSAGE);
-
-		if (produto == null) {
-
-			if (appController.VerificarCarrinho() > 0) {
-				int confirm = JOptionPane.showConfirmDialog(null,
-						"Já escolheu todos os produtos desejados?\n\n" + "Escolha Ok - se quiser ir ao caixa\n"
-								+ "Escolha Cancelar - para escolher mais produtos",
-						"Já pegou todos os produtos?", JOptionPane.OK_CANCEL_OPTION);
-
-				if (confirm == 0) {
-
-					IrAoCaixa();
-
-				} else
-					StartMenu();
-			} else {
-				JOptionPane.showMessageDialog(null, "Por favor escolha pelo menos 1 produto!",
-						"Não é possível comprar 0 produtos né", JOptionPane.WARNING_MESSAGE);
-				StartMenu();
-			}
-
-		} else if (produto.equals("")) {
-			JOptionPane.showMessageDialog(null, "Por favor, digite um produto válido!", "Produto não encontrado",
-					JOptionPane.WARNING_MESSAGE);
-			StartMenu();
+		if (carrinho.VerificarCarrinho() == 10) {
+			JOptionPane.showMessageDialog(null,
+					"Notamos que você já pegou 10 produtos, e esse é o máximo que seu carrinho pode carregar...\nPor favor se redirecione ao caixa :)",
+					"Seu carrinho está muito cheio !", JOptionPane.WARNING_MESSAGE);
+			IrAoCaixa();
 		} else {
-			JOptionPane.showMessageDialog(null, "O produto \"" + produto + "\" foi adicionado ao carrinho!",
-					"Novo produto adicionado no carrinho!", JOptionPane.WARNING_MESSAGE);
-			appController.InserirProduto(produto);
-			timer = new Timer(250, updateWindow);
-			timer.start();
+
+			String produto = null;
+
+			produto = JOptionPane.showInputDialog(null,
+					"Por Favor, indique o nome do produto:\nOu clique em \"Cancelar\" para finalizar a operação:",
+					"Adicionando Produtos ao carrinho de compras", JOptionPane.QUESTION_MESSAGE);
+
+			if (produto == null) {
+
+				if (carrinho.VerificarCarrinho() > 0) {
+					int confirm = JOptionPane.showConfirmDialog(null,
+							"Já escolheu todos os produtos desejados?\n\n" + "Escolha Ok - se quiser ir ao caixa\n"
+									+ "Escolha Cancelar - para escolher mais produtos",
+							"Já pegou todos os produtos?", JOptionPane.OK_CANCEL_OPTION);
+
+					if (confirm == 0) {
+
+						IrAoCaixa();
+
+					} else
+						StartMenu();
+				} else {
+					JOptionPane.showMessageDialog(null, "Por favor escolha pelo menos 1 produto!",
+							"Não é possível comprar 0 produtos né", JOptionPane.WARNING_MESSAGE);
+					StartMenu();
+				}
+
+			} else if (produto.equals("")) {
+				JOptionPane.showMessageDialog(null, "Por favor, digite um produto válido!", "Produto não encontrado",
+						JOptionPane.WARNING_MESSAGE);
+				StartMenu();
+			} else {
+				JOptionPane.showMessageDialog(null, "O produto \"" + produto + "\" foi adicionado ao carrinho!",
+						"Novo produto adicionado no carrinho!", JOptionPane.WARNING_MESSAGE);
+
+				if (carrinho.VerificarCarrinho() == 0) {
+					carrinho.InserirPrimeiroProduto(produto);
+				} else {
+					carrinho.InserirProduto(produto);
+				}
+
+				timer = new Timer(250, updateWindow);
+				timer.start();
+			}
 		}
 
 	}
@@ -142,10 +156,11 @@ public class App extends javax.swing.JFrame {
 		}
 	};
 
+	// Configura a nova imagem do carrinho de compras
 	static ActionListener updateWindow = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 
-			int qteProdutos = appController.VerificarCarrinho();
+			int qteProdutos = carrinho.VerificarCarrinho();
 			timer.stop();
 
 			try {
@@ -164,6 +179,7 @@ public class App extends javax.swing.JFrame {
 		}
 	};
 
+	// Atualiza a janela para mostrar as imagens
 	static ActionListener updateImage = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 
@@ -190,6 +206,7 @@ public class App extends javax.swing.JFrame {
 		}
 	};
 
+	// Mostra o menu após utilizando um timer para fazer um delay
 	static ActionListener StartMenuAfterSomeTime = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 			timer.stop();
@@ -197,13 +214,14 @@ public class App extends javax.swing.JFrame {
 		}
 	};
 
+	// Remove produtos e atualiza as imagens  
 	static public void RemoverProduto() {
 
 		boolean continueAsking = true;
 
 		while (continueAsking) {
 
-			if (appController.VerificarCarrinho() > 1) {
+			if (carrinho.VerificarCarrinho() > 1) {
 				String produto = JOptionPane.showInputDialog("Por favor, digite o produto a ser retirado do carrinho:\n"
 						+ "Escolha a opção \"Cancelar\" caso já esteja contente com a quantidade de produtos em seu carrinho:");
 
@@ -211,11 +229,14 @@ public class App extends javax.swing.JFrame {
 					continueAsking = false;
 					IrAoCaixa();
 				} else if (produto.equals("")) {
-					JOptionPane.showMessageDialog(null, "Por favor digite o nome de algum produto", "Tente novamente",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Por favor digite o nome de algum produto válido",
+							"Tente novamente", JOptionPane.ERROR_MESSAGE);
 					RemoverProduto();
 				} else {
-					appController.RemoverProduto(produto);
+					JOptionPane.showMessageDialog(null, carrinho.RemoverProduto(produto));
+					continueAsking = false;
+					timer = new Timer(250, updateWindow);
+					timer.start();
 				}
 			} else {
 				int confirm = JOptionPane.showConfirmDialog(null,
@@ -223,11 +244,12 @@ public class App extends javax.swing.JFrame {
 								+ "se removê-lo, iremos te redirecionar ao mercado para escolher novos produtos. \nDeseja continuar?",
 						"Ops ...", JOptionPane.YES_NO_OPTION);
 				if (confirm == 1) {
-					JOptionPane.showMessageDialog(null,
-							"Ok, você já é o próximo na fila, apenas aguarde alguns segundos ...");
+					IrAoCaixa();
 				} else {
-					appController.LimparCarrinho();
-					StartMenu();
+					carrinho.LimparCarrinho();
+					continueAsking = false;
+					timer = new Timer(250, updateWindow);
+					timer.start();
 				}
 			}
 
@@ -235,6 +257,7 @@ public class App extends javax.swing.JFrame {
 
 	}
 
+	// Menu caixa
 	static public void IrAoCaixa() {
 		int confirm = JOptionPane.showConfirmDialog(null,
 				"Ok, agora que você está aguardando na fila do caixa, deseja remover algum item do carrinho?",
@@ -242,9 +265,11 @@ public class App extends javax.swing.JFrame {
 
 		if (confirm == 1) {
 			JOptionPane.showMessageDialog(null, "Ok, você está na fila, apenas aguarde alguns minutos ...");
-			JOptionPane.showMessageDialog(null, appController.ListarProdutos(), "Itens comprados:", JOptionPane.INFORMATION_MESSAGE);
-		} else
+			JOptionPane.showMessageDialog(null, carrinho.ListarProdutos(), "Itens comprados:",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
 			RemoverProduto();
+		}
 	}
 
 }

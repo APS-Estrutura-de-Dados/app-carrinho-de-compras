@@ -107,7 +107,7 @@ public class ListaDinamica {
         }
         No anterior = inicio;
         No atual = inicio;
-        while(atual != null && atual.getDado() != dado){
+        while(atual != null && !atual.getDado().equals(dado)){
             anterior = atual;
             atual = atual.getProxNo();
         }
