@@ -4,20 +4,20 @@ package Estruturas;
 
 public class No {
     
-    private int dado;
+    private String dado;
     private No proxNo;
     
-    public No(int dado){
+    public No(String dado){
         this.dado = dado;
         this.proxNo = null;
     }
     
    
-    public void setDado(int dado){
+    public void setDado(String dado){
         this.dado = dado;
     }
     
-    public int getDado(){
+    public String getDado(){
         return this.dado;
     }
     

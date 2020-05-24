@@ -16,7 +16,7 @@ public class ListaDinamica {
         return (inicio == null);
     }
     
-    public void insertAtFront(int dado){
+    public void insertAtFront(String dado){
         No novoNo = new No(dado);
         if(isEmpty()){
             inicio = novoNo;
@@ -28,7 +28,7 @@ public class ListaDinamica {
     }
     
     
-    public void insertAtBack(int dado){
+    public void insertAtBack(String dado){
         No novoNo = new No(dado);
         if(isEmpty()){
             inicio = novoNo;
@@ -39,21 +39,23 @@ public class ListaDinamica {
         }
     }
     
-    public void print(){
+    public String print(){
+    	String data = "";
         if (isEmpty()){
-            System.out.println("Lista Vazia");
+            return ("Lista Vazia");
         }else{
             No auxiliar = inicio;
             while(auxiliar != null){
-                System.out.println(auxiliar.getDado());
+                data += (auxiliar.getDado())+" , ";
                 auxiliar = auxiliar.getProxNo();
             }
         }
+        return data;
     }
     
-    public int removeFromFront(){
+    public String removeFromFront(){
         if(isEmpty()){
-            return -1; // flag lista vazia
+            return null; // flag lista vazia
         }
         No auxiliar = inicio;
         if(inicio == fim){
@@ -65,9 +67,9 @@ public class ListaDinamica {
         return auxiliar.getDado();
     }
     
-    public int removeFromBack(){
+    public String removeFromBack(){
         if(isEmpty()){
-            return -1;
+            return null;
         }
         No auxiliar = fim;
         if (inicio == fim){
@@ -84,7 +86,7 @@ public class ListaDinamica {
         return auxiliar.getDado();
     }
     
-    public No find(int dado){
+    public No find(String dado){
         if(isEmpty()){
             return null;
         }
@@ -99,9 +101,9 @@ public class ListaDinamica {
     }
     
     
-    public int remove(int dado){
+    public String remove(String dado){
         if(isEmpty()){
-            return -1;
+            return null;
         }
         No anterior = inicio;
         No atual = inicio;
@@ -111,7 +113,7 @@ public class ListaDinamica {
         }
         
         if(atual == null){
-            return -1;
+            return null;
         }
         
         No auxiliar = atual;
