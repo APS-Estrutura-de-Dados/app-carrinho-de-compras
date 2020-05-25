@@ -10,24 +10,18 @@ public class Carrinho {
 
 	ListaDinamica Lista;
 
-	public void InserirPrimeiroProduto(String produto) {
-		Lista.insertAtFront(produto);
-	}
-
 	public void InserirProduto(String produto) {
-		Lista.insertAtBack(produto);
-	}
-
-	public String RemoverProduto(String produto) {
-		if(Lista.remove(produto)==null) {
-			return "O produto \"" + Lista.remove(produto) + "\" não foi encontrado";
-		}else {
-			return "O produto \"" + Lista.remove(produto) + "\" foi removido do carrinho";	
+		if(VerificarCarrinho() == 10) {
+			Lista.insertAtBack(produto);
 		}
 	}
 
-	public void LimparCarrinho() {
-		Lista.removeFromFront();
+	public String RemoverProduto(String produto) {
+		if (Lista.remove(produto) == null) {
+			return "O produto \"" + Lista.remove(produto) + "\" não foi encontrado";
+		} else {
+			return "O produto \"" + Lista.remove(produto) + "\" foi removido do carrinho";
+		}
 	}
 
 	public int VerificarCarrinho() {
@@ -42,7 +36,7 @@ public class Carrinho {
 
 	public String ListarProdutos() {
 		String produtos = Lista.print();
-		return produtos.substring(0, produtos.length() - 3);
+		return produtos.substring(0, produtos.length() - 3).replace(" , ", ",\n");
 	}
 
 }

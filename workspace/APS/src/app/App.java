@@ -75,7 +75,7 @@ public class App extends javax.swing.JFrame {
 				"Bem Vindo !", JOptionPane.INFORMATION_MESSAGE);
 
 		JOptionPane.showMessageDialog(null,
-				"Na próxima janela, será possível ver seu carrinho de compras,\nvocê pode adicionar quantos produtos quiser para compra-los posteriormente!",
+				"Na próxima janela, será possível ver seu carrinho de compras.\nNele, você deverá adicionar 10 produtos (pois este é o minímo de produtos permitidos neste mercado).",
 				"Iniciando o app", JOptionPane.WARNING_MESSAGE);
 
 		new Timer(500, inicialInfo).start();
@@ -89,36 +89,19 @@ public class App extends javax.swing.JFrame {
 		if (carrinho.VerificarCarrinho() == 10) {
 			JOptionPane.showMessageDialog(null,
 					"Notamos que você já pegou 10 produtos, e esse é o máximo que seu carrinho pode carregar...\nPor favor se redirecione ao caixa :)",
-					"Seu carrinho está muito cheio !", JOptionPane.WARNING_MESSAGE);
+					"Seu carrinho está cheio !", JOptionPane.WARNING_MESSAGE);
 			IrAoCaixa();
 		} else {
 
 			String produto = null;
 
-			produto = JOptionPane.showInputDialog(null,
-					"Por Favor, indique o nome do produto:\nOu clique em \"Cancelar\" para finalizar a operação:",
+			produto = JOptionPane.showInputDialog(null, "Por Favor, indique o nome do produto:",
 					"Adicionando Produtos ao carrinho de compras", JOptionPane.QUESTION_MESSAGE);
 
 			if (produto == null) {
-
-				if (carrinho.VerificarCarrinho() > 0) {
-					int confirm = JOptionPane.showConfirmDialog(null,
-							"Já escolheu todos os produtos desejados?\n\n" + "Escolha Ok - se quiser ir ao caixa\n"
-									+ "Escolha Cancelar - para escolher mais produtos",
-							"Já pegou todos os produtos?", JOptionPane.OK_CANCEL_OPTION);
-
-					if (confirm == 0) {
-
-						IrAoCaixa();
-
-					} else
-						StartMenu();
-				} else {
-					JOptionPane.showMessageDialog(null, "Por favor escolha pelo menos 1 produto!",
-							"Não é possível comprar 0 produtos né", JOptionPane.WARNING_MESSAGE);
-					StartMenu();
-				}
-
+				JOptionPane.showMessageDialog(null, "Por favor, digite um produto válido!", "Produto não encontrado",
+						JOptionPane.WARNING_MESSAGE);
+				StartMenu();
 			} else if (produto.equals("")) {
 				JOptionPane.showMessageDialog(null, "Por favor, digite um produto válido!", "Produto não encontrado",
 						JOptionPane.WARNING_MESSAGE);
@@ -127,11 +110,7 @@ public class App extends javax.swing.JFrame {
 				JOptionPane.showMessageDialog(null, "O produto \"" + produto + "\" foi adicionado ao carrinho!",
 						"Novo produto adicionado no carrinho!", JOptionPane.WARNING_MESSAGE);
 
-				if (carrinho.VerificarCarrinho() == 0) {
-					carrinho.InserirPrimeiroProduto(produto);
-				} else {
-					carrinho.InserirProduto(produto);
-				}
+				carrinho.InserirProduto(produto);
 
 				timer = new Timer(250, updateWindow);
 				timer.start();
@@ -214,7 +193,7 @@ public class App extends javax.swing.JFrame {
 		}
 	};
 
-	// Remove produtos e atualiza as imagens  
+	// Remove produtos e atualiza as imagens
 	static public void RemoverProduto() {
 
 		boolean continueAsking = true;
@@ -234,19 +213,6 @@ public class App extends javax.swing.JFrame {
 					RemoverProduto();
 				} else {
 					JOptionPane.showMessageDialog(null, carrinho.RemoverProduto(produto));
-					continueAsking = false;
-					timer = new Timer(250, updateWindow);
-					timer.start();
-				}
-			} else {
-				int confirm = JOptionPane.showConfirmDialog(null,
-						"Notamos aqui que você possui apenas 1 produto em seu carrinho, "
-								+ "se removê-lo, iremos te redirecionar ao mercado para escolher novos produtos. \nDeseja continuar?",
-						"Ops ...", JOptionPane.YES_NO_OPTION);
-				if (confirm == 1) {
-					IrAoCaixa();
-				} else {
-					carrinho.LimparCarrinho();
 					continueAsking = false;
 					timer = new Timer(250, updateWindow);
 					timer.start();
