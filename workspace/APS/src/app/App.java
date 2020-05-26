@@ -19,6 +19,7 @@ public class App extends javax.swing.JFrame {
 	static int inicialTime;
 	static int waitTime;
 	static boolean firstInserting = true;
+	static int produtosEsteiraCaixa;
 
 	// Objetos
 	static App app;
@@ -76,8 +77,10 @@ public class App extends javax.swing.JFrame {
 				"Bem Vindo !", JOptionPane.INFORMATION_MESSAGE);
 
 		JOptionPane.showMessageDialog(null,
-				"Na próxima janela, será possível ver seu carrinho de compras.\nNele, você deverá adicionar 10 produtos (pois este é o minímo de produtos permitidos neste mercado).",
-				"Iniciando o app", JOptionPane.WARNING_MESSAGE);
+				"Na próxima janela, será possível ver seu carrinho de compras, nele"
+				+ "\nvocê poderá adicionar e remover produtos para comprá-los posteriormente!"
+				+ "\n\n*Você possui dinheiro para comprar apenas 10 produtos, então fica esperto hein !!",
+				"Iniciando o app", JOptionPane.INFORMATION_MESSAGE);
 
 		new Timer(500, inicialInfo).start();
 		// Iniciando o app ------------------------------
@@ -88,9 +91,6 @@ public class App extends javax.swing.JFrame {
 	public static void StartMenu() {
 
 		if (carrinho.VerificarCarrinho() == 10) {
-			JOptionPane.showMessageDialog(null,
-					"Notamos que você já pegou 10 produtos, e esse é o máximo que seu carrinho pode carregar...\nPor favor se redirecione ao caixa :)",
-					"Seu carrinho está cheio !", JOptionPane.WARNING_MESSAGE);
 			IrAoCaixa();
 		} else {
 
@@ -109,7 +109,7 @@ public class App extends javax.swing.JFrame {
 				StartMenu();
 			} else {
 				JOptionPane.showMessageDialog(null, "O produto \"" + produto + "\" foi adicionado ao carrinho!",
-						"Novo produto adicionado no carrinho!", JOptionPane.WARNING_MESSAGE);
+						"Novo produto adicionado no carrinho!", JOptionPane.INFORMATION_MESSAGE);
 
 				carrinho.InserirProduto(produto);
 
@@ -227,24 +227,24 @@ public class App extends javax.swing.JFrame {
 	// Menu caixa
 	static public void IrAoCaixa() {
 		int confirm = JOptionPane.showConfirmDialog(null,
-				"Ok, agora que você está aguardando na fila do caixa, deseja remover algum item do carrinho?",
-				"Você está na fila do caixa", JOptionPane.YES_NO_OPTION);
+				"Você já pegou 10 produtos !! \nDeseja remover algum item do carrinho, antes de finalizar a compra?",
+				"Pronto?", JOptionPane.YES_NO_OPTION);
 
 		if (confirm == 1) {
 
-			JOptionPane.showMessageDialog(null, "Ok, você está na fila, apenas aguarde alguns minutos ...");
+			JOptionPane.showMessageDialog(null,
+					"Ok, você encontrou um caixa vazio, e foi até ele para finalizar sua compra ...",
+					"Que sorte hein ...", JOptionPane.INFORMATION_MESSAGE);
 
 			caixa = new Caixa(carrinho);
 			caixa.AdicionarProdutos();
 
-			JOptionPane.showMessageDialog(null, caixa.BuscarProdutosCaixa(), "Itens comprados:",
+			JOptionPane.showMessageDialog(null, caixa.BuscarProdutosCaixa(), "Produtos comprados:",
 					JOptionPane.INFORMATION_MESSAGE);
-			
+
 		} else {
 			RemoverProduto();
 		}
 	}
 
-	// 
-	
 }

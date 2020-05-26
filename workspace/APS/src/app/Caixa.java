@@ -33,7 +33,12 @@ public class Caixa {
 	}
 
 	public String BuscarProdutosCaixa() {
-		return caixa.display();
+		String data = caixa.display();
+		data = "1º Produto: " + data.substring(0, data.length()-3);
+		for (int i = 2; i < data.length()+2; i++) {
+			data = data.replaceFirst(" , ", "\n"+i+"º Produto: ");
+		}
+		return data;
 	}
 
 }
