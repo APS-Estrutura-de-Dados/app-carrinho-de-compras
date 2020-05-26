@@ -23,6 +23,7 @@ public class App extends javax.swing.JFrame {
 	// Objetos
 	static App app;
 	static Carrinho carrinho;
+	static Caixa caixa;
 
 	// Timer para realizar animações
 	static Timer timer;
@@ -95,13 +96,13 @@ public class App extends javax.swing.JFrame {
 
 			String produto = null;
 
-			produto = JOptionPane.showInputDialog(null, "Por Favor, indique o nome do produto:",
+			produto = JOptionPane.showInputDialog(null,
+					"Por Favor, indique o nome do produto:\nOu clique em \"Cancelar\" para finalizar a aplicação.",
 					"Adicionando Produtos ao carrinho de compras", JOptionPane.QUESTION_MESSAGE);
 
 			if (produto == null) {
-				JOptionPane.showMessageDialog(null, "Por favor, digite um produto válido!", "Produto não encontrado",
-						JOptionPane.WARNING_MESSAGE);
-				StartMenu();
+				System.exit(0);
+				;
 			} else if (produto.equals("")) {
 				JOptionPane.showMessageDialog(null, "Por favor, digite um produto válido!", "Produto não encontrado",
 						JOptionPane.WARNING_MESSAGE);
@@ -230,12 +231,20 @@ public class App extends javax.swing.JFrame {
 				"Você está na fila do caixa", JOptionPane.YES_NO_OPTION);
 
 		if (confirm == 1) {
+
 			JOptionPane.showMessageDialog(null, "Ok, você está na fila, apenas aguarde alguns minutos ...");
-			JOptionPane.showMessageDialog(null, carrinho.ListarProdutos(), "Itens comprados:",
+
+			caixa = new Caixa(carrinho);
+			caixa.AdicionarProdutos();
+
+			JOptionPane.showMessageDialog(null, caixa.BuscarProdutosCaixa(), "Itens comprados:",
 					JOptionPane.INFORMATION_MESSAGE);
+			
 		} else {
 			RemoverProduto();
 		}
 	}
 
+	// 
+	
 }

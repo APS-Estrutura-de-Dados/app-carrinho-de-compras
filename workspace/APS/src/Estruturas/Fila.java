@@ -2,11 +2,11 @@ package Estruturas;
 
 public class Fila{
 
-  private int[] vetorFila;
+  private String[] vetorFila;
   private int fim = -1;
 
   public Fila(int maxSize){
-    vetorFila = new int[maxSize]; 
+    vetorFila = new String[maxSize]; 
     fim = -1;
   }
 
@@ -14,27 +14,27 @@ public class Fila{
     return (fim == vetorFila.length-1);
   }
 
-  public void enqueue(int dado){
+  public void enqueue(String dado){
     if (!isFull()){
       fim++;
       vetorFila[fim] = dado;
     }
   }
 
-  public void display(){
-    System.out.println("**** Imprimindo a fila ****");
+  public String display(){
+  	String data = "";
     for(int i = 0; i <= fim; i++){
-      System.out.print(vetorFila[i] + " ");
+      data += (vetorFila[i] + "\n");
     }
-    System.out.println("\n************");
+    return data;
   }
 
   public boolean isEmpty(){
     return (fim == -1);
   }
 
-  public int dequeue(){
-    int elemento;
+  public String dequeue(){
+	  String elemento;
     if (!isEmpty()){
       elemento = vetorFila[0];
       for (int i = 0; i < fim; i++){
@@ -44,15 +44,15 @@ public class Fila{
       return elemento;
     }
     else{
-      return -1;
+      return null;
     }
   }
 
-  public int peek(){
+  public String peek(){
     if (!isEmpty()){
       return vetorFila[0];
     }else{
-      return -1;
+      return null;
     }
   }
 }

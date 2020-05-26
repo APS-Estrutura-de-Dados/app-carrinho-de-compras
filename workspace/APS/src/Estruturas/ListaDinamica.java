@@ -100,6 +100,31 @@ public class ListaDinamica {
         return null;
     }
     
+    public String find(int posicao){
+    	No temp;
+
+        //é posição zero?
+        if (posicao == 0) {
+            temp = inicio;
+            if (size() == 1) {
+            	
+            } else {
+                
+            }
+        } else { //para as demais posições
+            No aux = inicio; //cria nó auxiliar que aponta para o inicio
+            int cont = 0; //cria um contador de posicao
+            //então caminha na lista enquanto não for null e 
+            //até que atinga a posição anterior de remoção
+            while (aux != null && !(cont == posicao - 1)) {
+                aux = aux.getProxNo();
+                cont++;
+            }
+            temp = aux.getProxNo(); //temp aponta para o proximo do auxiliar
+        }
+        return temp.getDado();
+    }
+    
     
     public String remove(String dado){
         if(isEmpty()){

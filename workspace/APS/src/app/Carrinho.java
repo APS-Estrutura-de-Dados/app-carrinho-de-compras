@@ -11,7 +11,7 @@ public class Carrinho {
 	ListaDinamica Lista;
 
 	public void InserirProduto(String produto) {
-		if(VerificarCarrinho() == 10) {
+		if(VerificarCarrinho() < 10) {
 			Lista.insertAtBack(produto);
 		}
 	}
@@ -35,8 +35,13 @@ public class Carrinho {
 	}
 
 	public String ListarProdutos() {
-		String produtos = Lista.print();
-		return produtos.substring(0, produtos.length() - 3).replace(" , ", ",\n");
+		return Lista.print();
 	}
 
+	public String BuscarProduto(int posicao) {
+		String data = null;
+		data = Lista.find(posicao); 
+		return data;
+	}
+	
 }
